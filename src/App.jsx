@@ -1,5 +1,5 @@
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import jsPDF from 'jspdf'
 import './App.css'
 
@@ -30,7 +30,15 @@ const defaultFormData = {
 
   const [showSummary, setShowSummary] = useState(false)
 
-  const [briefs, setBriefs] = useState([])
+const [briefs, setBriefs] = useState(() => {
+  const savedBriefs = localStorage.getItem('qbsBriefs')
+
+  if (savedBriefs) {
+    return JSON.parse(savedBriefs)
+  }
+
+  return []
+})
 
 const [editingId, setEditingId] = useState(null)
 
@@ -40,13 +48,7 @@ const [currentStep, setCurrentStep] = useState(1)
 
 const totalSteps = 7
 
-useEffect(() => {
-  const savedBriefs = localStorage.getItem('qbsBriefs')
 
-  if (savedBriefs) {
-    setBriefs(JSON.parse(savedBriefs))
-  }
-}, [])
 
 
 const handleChange = (e) => {
